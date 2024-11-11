@@ -5,5 +5,4 @@ scikit-learn==1.3.0
 pandas==2.2.3
 networkx==3.1
 pymupdf==1.24.1  # for fitz (PyMuPDF)
-llama_cpp_python==0.3.1
 groq==0.11.0

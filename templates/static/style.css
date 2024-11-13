@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.output-container {
+  max-height: 300px; /* Set maximum height */
+  overflow-y: auto;  /* Enable vertical scroll */
+  background: #f0f8ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.output {
+  font-size: 18px;
+  color: #1c92d2;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #1c92d2, #f2fcfe);
+  color: #333;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.title {
+  background: #1c92d2;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+form {
+  padding: 30px 40px;
+}
+
+.row {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.row i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #1c92d2;
+}
+
+.row input[type="text"],
+.row input[type="file"] {
+  width: 100%;
+  padding: 14px 20px 14px 45px;
+  font-size: 16px;
+  color: #333;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.row input[type="text"]:focus,
+.row input[type="file"]:focus {
+  border-color: #1c92d2;
+  outline: none;
+}
+
+.row input[type="text"]::placeholder,
+.row input[type="file"]::placeholder {
+  color: #aaa;
+}
+
+.button input[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background: #1c92d2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button input[type="submit"]:hover {
+  background: #006494;
+}
+
+.output {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #1c92d2;
+  text-align: left;
+  background: #f0f8ff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.output h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.output-content {
+  white-space: pre-wrap; /* Preserve newlines and spaces */
+  line-height: 1.5;
+}

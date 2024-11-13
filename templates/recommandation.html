@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommendation Chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      height: 100vh;
+      background: #1b1b1b;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 80%; /* Augmentez la largeur maximale */
+      height: 90vh; /* Hauteur de la boîte de chat */
+      background-color: #333;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .title {
+      background: #444;
+      color: #e0e0e0;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .chat-container {
+      padding: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+      background: #222;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message .bubble {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .message.user .bubble {
+      background: #4a76a8;
+      color: #fff;
+      border-radius: 15px 15px 0 15px;
+    }
+
+    .message.bot .bubble {
+      background: #444;
+      color: #e0e0e0;
+      border-radius: 15px 15px 15px 0;
+    }
+
+    .input-section {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: #333;
+      border-top: 2px solid #444;
+    }
+
+    .input-section textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #555;
+      background: #444;
+      color: #e0e0e0;
+      resize: none;
+      outline: none;
+      margin-right: 10px;
+    }
+
+    .file-input {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .file-input input[type="file"] {
+      display: none;
+    }
+
+    .file-label {
+      background: #555;
+      color: #e0e0e0;
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .file-label i {
+      margin-right: 5px;
+    }
+
+    .send-button {
+      padding: 10px 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #e0e0e0;
+      background: #4a76a8;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .send-button:hover {
+      background: #5b89c4;
+    }
+  </style>
+
+  <script>
+    async function handleRecommendation(event) {
+      event.preventDefault();
+      const inputText = document.getElementById("inputText").value;
+      const inputImage = document.getElementById("inputImage").files[0];
+      
+      if (!inputText.trim() && !inputImage) return;
+
+      const formData = new FormData();
+      if (inputText.trim()) {
+        formData.append("inputText", inputText);
+        addMessage(inputText, "user");
+      }
+      if (inputImage) {
+        formData.append("inputImage", inputImage);
+        addMessage("File uploaded: " + inputImage.name, "user");
+      }
+
+      try {
+        const response = await fetch("/recommend", {
+          method: "POST",
+          body: formData
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const data = await response.json();
+        const recommendation = data.recommendation;
+
+        addMessage(recommendation, "bot");
+
+      } catch (error) {
+        console.error("Error fetching recommendation:", error);
+        addMessage("An error occurred while retrieving the recommendation.", "bot");
+      }
+
+      document.getElementById("inputText").value = "";
+      document.getElementById("inputImage").value = "";
+    }
+
+    function addMessage(text, sender) {
+      const chatContainer = document.getElementById("chatContainer");
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message", sender);
+
+      const bubbleDiv = document.createElement("div");
+      bubbleDiv.classList.add("bubble");
+      bubbleDiv.innerText = text;
+
+      messageDiv.appendChild(bubbleDiv);
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="title"><span>knowledge retrival Chat</span></div>
+    <div class="chat-container" id="chatContainer">
+    </div>
+    <form class="input-section" onsubmit="handleRecommendation(event)">
+      <textarea id="inputText" rows="1" placeholder="Type your message..."></textarea>
+      <label class="file-label file-input">
+        <i class="fas fa-paperclip"></i> 
+        <span>Choose a file</span>
+        <input type="file" id="inputImage" accept="image/*" />
+      </label>
+      <button type="submit" class="send-button">Send</button>
+    </form>
+  </div>
+</body>
+</html>
